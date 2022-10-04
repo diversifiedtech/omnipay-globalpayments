@@ -154,4 +154,12 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     {
         return $this->setParameter('goodResponseCodes', $value);
     }
+
+    public function setFeeAmount($value){
+        return $this->setParameter('feeAmount', $value);
+    }
+
+    public function getFeeAmount(){
+        return $this->getParameter('feeAmount');
+    }
 }

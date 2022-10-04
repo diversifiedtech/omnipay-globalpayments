@@ -115,6 +115,12 @@ class HeartlandGateway extends AbstractGateway
 
     public function createCard($options = array())
     {
+        if (isset($options['check'])) {
+            return $this->createRequest(
+                $this->heartlandMessagePath . '\CreateAchRequest', $options
+            );
+        }
+
         return $this->createRequest(
             $this->heartlandMessagePath . '\CreateCardRequest', $options
         );

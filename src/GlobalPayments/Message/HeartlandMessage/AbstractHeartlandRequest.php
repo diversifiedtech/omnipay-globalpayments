@@ -29,7 +29,11 @@ abstract class AbstractHeartlandRequest extends AbstractRequest
             $gpCheckObj->accountType      = $omnipayCheckObj->getAccountType();
             $gpCheckObj->checkType        = $omnipayCheckObj->getCheckType();
             $gpCheckObj->secCode          = $omnipayCheckObj->getSecCode();
-            $gpCheckObj->checkHolderName  = $omnipayCheckObj->getCheckHolderName();
+            if($omnipayCheckObj->getCheckHolderName() != null){
+                $gpCheckObj->checkHolderName  = $omnipayCheckObj->getCheckHolderName();
+            }else{
+                $gpCheckObj->checkHolderName  = ($omnipayCheckObj->getFirstName() . " " .  $omnipayCheckObj->getLastName());
+            }
         }
 
         return $gpCheckObj;
