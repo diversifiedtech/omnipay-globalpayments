@@ -31,7 +31,7 @@ class EcommerceTab extends TestCase
     private $tsepDiscuverCup = 'uu3pWBH1vhf62342';
     private $tsepDiners = 'jnaYZrd7vsDW0018';
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $transactionKey = 'DPJLWWAD1MOAX8XPCHZAXP15U0UME5U0';

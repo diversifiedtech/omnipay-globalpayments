@@ -12,7 +12,7 @@ use Omnipay\Tests\TestCase;
  */
 class GeniusEcommerceTest extends TestCase
 {
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 

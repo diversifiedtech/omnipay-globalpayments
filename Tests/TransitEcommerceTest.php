@@ -27,7 +27,7 @@ class TransitEcommerceTest extends TestCase
     private $tsepDiscuverCup = 'uu3pWBH1vhf62342';
     private $tsepDiners = 'jnaYZrd7vsDW0018';
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 

@@ -19,7 +19,7 @@ class HeartlandEcommerceTest extends TestCase
     protected $publicKey = 'pkapi_cert_3ZjQJbCO9rygPdXFkd';
     protected $secretAPIKey = 'skapi_cert_McU0AgBkx2EAldEfhhtolMw0RnvahBQAnXFdLYga-Q'; // 777701408656
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
