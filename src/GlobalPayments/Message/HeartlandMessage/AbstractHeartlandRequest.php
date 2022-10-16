@@ -146,10 +146,33 @@ abstract class AbstractHeartlandRequest extends AbstractRequest
         return $this->setParameter('paymentMethodReference', $value);
     }
 
+    public function getTransactionId()
+    {
+        return $this->getParameter('transactionId');
+    }
+
+    public function setTransactionId($value)
+    {
+        return $this->setParameter('transactionId', $value);
+    }
+
+    public function getTerminalId()
+    {
+        return $this->getParameter('terminalId');
+    }
+
+    public function setTerminalId($value)
+    {
+        return $this->setParameter('terminalId', $value);
+    }
+
+
     public function sendData($data)
     {
         parent::sendData($data);
 
         return new HeartlandResponse($this, $this->runTrans());
     }
+
+
 }

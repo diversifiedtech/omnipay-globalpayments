@@ -8,15 +8,69 @@ use GlobalPayments\Api\Entities\StoredCredential;
 use GlobalPayments\Api\PaymentMethods\CreditCardData;
 use Omnipay\GlobalPayments\CreditCard;
 use Omnipay\GlobalPayments\Message\ProPayParametersTrait;
+use Omnipay\GlobalPayments\Message\ProPayResponse;
 
-abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
-{    
+abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractRequest
+{
+
+    use ProPayParametersTrait;
+
+
+    const PROPAY_TEST = "https://xmltestapi.propay.com/";
+    const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
+
     protected $gpBillingAddyObj;
     protected $gpCardObj;
     protected $gpStoredCredObj;
 
+    protected $authHeader;
+
+    protected $headers = [
+        'Content-Type' =>  'application/json',
+    ];
+
+
     protected abstract function runTrans();
+
+
+    protected function setupAuth(){
+        $this->authHeader = $this->getAuthHeader();
+        $this->endpoint = $this->getTestMode() ? static::PROPAY_TEST : static::PROPAY_PRODUCTION;
+    }
+
+
     protected abstract function setServicesConfig();
+
+
+    public function callEndpoint($method = "POST", $path, $data){
+        $data = json_encode($data);
+
+        $headers  = array_merge($this->headers,[
+            'Content-Length' =>  strlen($data),
+            'Authorization' => 'Basic ' . base64_encode($this->authHeader)
+        ]);
+
+        $endpoint = $this->endpoint . ltrim($path,"/");
+
+        $httpResponse = $this->httpClient->request(
+            $method,
+            $endpoint,
+            $headers,
+            $data
+        );
+
+        return $httpResponse->getBody()->getContents();
+    }
+
+    /** When send() is call this is called second after getData() */
+    public function sendData($data)
+    {
+        $this->setupAuth();
+        $this->setServicesConfig();
+
+        return new ProPayResponse($this, $this->runTrans());
+    }
+
 
     /**
      * Overrides parent class method to create a Omnipay\GlobalPayments\CreditCard.
@@ -102,10 +156,47 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $this->gpStoredCredObj = $this->getGpStoredCredObj();
     }
 
-    /** When send() is call this is called second after getData() */
-    public function sendData($data)
+
+
+
+    public function setTermid($value)
     {
-        $this->setServicesConfig();
+        return $this->setParameter('termid',$value);
+    }
+
+    public function setCertStr($value)
+    {
+        return $this->setParameter('certStr',$value);
+    }
+
+    public function setAuthToken($value)
+    {
+        return $this->setParameter('AuthToken',$value);
+    }
+
+    public function setBillerAccountId($value)
+    {
+        return $this->setParameter('BillerAccountId',$value);
+    }
+
+    public function getTermid()
+    {
+        return $this->getParameter('termid');
+    }
+
+    public function getCertStr()
+    {
+        return $this->getParameter('certStr');
+    }
+
+    public function getAuthToken()
+    {
+        return $this->getParameter('AuthToken');
+    }
+
+    public function getBillerAccountId()
+    {
+        return $this->getParameter('BillerAccountId');
     }
 
     public function getDeviceId()
@@ -158,11 +249,13 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('goodResponseCodes', $value);
     }
 
-    public function setFeeAmount($value){
+    public function setFeeAmount($value)
+    {
         return $this->setParameter('feeAmount', $value);
     }
 
-    public function getFeeAmount(){
+    public function getFeeAmount()
+    {
         return $this->getParameter('feeAmount');
     }
 
@@ -184,5 +277,11 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function getWithReceivingAccountNumber()
     {
         return $this->getParameter('withReceivingAccountNumber');
+    }
+
+    public function getAuthHeader()
+    {
+
+        return $this->getParameter('BillerAccountId') . ":" . $this->getParameter('AuthToken');
     }
 }
