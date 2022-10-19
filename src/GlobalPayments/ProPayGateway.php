@@ -7,6 +7,7 @@ use Omnipay\Common\AbstractGateway;
 class ProPayGateway extends AbstractGateway
 {
     private $propayMessagePath = '\Omnipay\GlobalPayments\Message\ProPayMessage';
+    private $heartlandMessagePath = '\Omnipay\GlobalPayments\Message\HeartlandMessage';
 
     public function getName()
     {
@@ -35,25 +36,25 @@ class ProPayGateway extends AbstractGateway
     }
 
     // Methods for setting Gateway Authentication properties
-    
+
     public function setTermid($value)
     {
-        return $this->setParameter('termid',$value);
+        return $this->setParameter('termid', $value);
     }
 
     public function setCertStr($value)
     {
-        return $this->setParameter('certStr',$value);
+        return $this->setParameter('certStr', $value);
     }
 
     public function setAuthToken($value)
     {
-        return $this->setParameter('AuthToken',$value);
+        return $this->setParameter('AuthToken', $value);
     }
 
     public function setBillerAccountId($value)
     {
-        return $this->setParameter('BillerAccountId',$value);
+        return $this->setParameter('BillerAccountId', $value);
     }
 
     public function getTermid()
@@ -152,33 +153,58 @@ class ProPayGateway extends AbstractGateway
         return $this->setParameter('terminalId', $value);
     }
 
+    public function setHostedTransactionIdentifier($value)
+    {
+        return $this->setParameter('HostedTransactionIdentifier',$value);
+    }
+    public function getHostedTransactionIdentifier()
+    {
+        return $this->getParameter('HostedTransactionIdentifier');
+    }
+
     // Transactions
 
     public function getUrl($options = array())
     {
         return $this->createRequest(
-            $this->propayMessagePath . '\GetUrlRequest', $options
+            $this->propayMessagePath . '\GetUrlRequest',
+            $options
         );
-    }    
+    }
+
+    public function getResults($options = array())
+    {
+        return $this->createRequest(
+            $this->propayMessagePath. '\GetResultsRequest',
+            $options
+        );
+    }
+
+    public function splitPay($options = array()){
+        return $this->createRequest($this->heartlandMessagePath . '\SplitPayRequest', $options);
+    }
+
 
     public function purchase($options = array())
     {
         if (isset($options['check'])) {
             return $this->createRequest(
-                $this->propayMessagePath . '\ACHPurchaseRequest', $options
+                $this->propayMessagePath . '\ACHPurchaseRequest',
+                $options
             );
         }
 
         if (isset($options['protectPay'])) {
             return $this->propayCard($options);
-        }     
+        }
 
         if (isset($options['propaycheck'])) {
             return $this->propayAch($options);
-        }        
+        }
 
         return $this->createRequest(
-            $this->propayMessagePath . '\PurchaseRequest', $options
+            $this->propayMessagePath . '\PurchaseRequest',
+            $options
         );
     }
 }

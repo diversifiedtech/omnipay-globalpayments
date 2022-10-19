@@ -51,6 +51,8 @@ abstract class AbstractResponse extends CommonAbstractResponse
         }
         $data = get_object_vars($this->response);
         $data["transactionReference"] = isset($data["transactionReference"]) ? get_object_vars($data["transactionReference"]) : null;
+        $data["Result"] = isset($data["Result"]) ? get_object_vars($data["Result"]) : null;
+
         return $data;
     }
 

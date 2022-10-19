@@ -165,4 +165,15 @@ trait ProPayParametersTrait
     {
         return $this->getParameter("InvoiceNumber");
     }
+
+    /**
+     * Get Payer Paramters
+     */
+    public function getHostedTransactionId(){
+        return $this->getParameter("HostedTransactionId");
+    }
+
+    public function setHostedTransactionId($value){
+        return $this->setParameter("HostedTransactionId",$value);
+    }
 }

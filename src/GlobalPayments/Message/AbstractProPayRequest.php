@@ -52,12 +52,20 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
 
         $endpoint = $this->endpoint . ltrim($path,"/");
 
-        $httpResponse = $this->httpClient->request(
-            $method,
-            $endpoint,
-            $headers,
-            $data
-        );
+        if($method == "GET"){
+            $httpResponse = $this->httpClient->request(
+                $method,
+                $endpoint,
+                $headers
+            );
+        }else{
+            $httpResponse = $this->httpClient->request(
+                $method,
+                $endpoint,
+                $headers,
+                $data
+            );
+        }
 
         return $httpResponse->getBody()->getContents();
     }
@@ -179,6 +187,11 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
         return $this->setParameter('BillerAccountId',$value);
     }
 
+    public function setHostedTransactionIdentifier($value)
+    {
+        return $this->setParameter('HostedTransactionIdentifier',$value);
+    }
+
     public function getTermid()
     {
         return $this->getParameter('termid');
@@ -279,9 +292,13 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
         return $this->getParameter('withReceivingAccountNumber');
     }
 
+    public function getHostedTransactionIdentifier()
+    {
+        return $this->getParameter('HostedTransactionIdentifier');
+    }
+
     public function getAuthHeader()
     {
-
         return $this->getParameter('BillerAccountId') . ":" . $this->getParameter('AuthToken');
     }
 }

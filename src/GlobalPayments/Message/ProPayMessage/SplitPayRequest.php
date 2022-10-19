@@ -12,15 +12,13 @@ use GlobalPayments\Api\Entities\Enums\Environment;
 
 class SplitPayRequest extends AbstractHeartlandRequest
 {
-
-
     protected function setServicesConfig()
     {
         $config = new PorticoConfig();
-        $config->certificationStr = '5dbacb0fc504dd7bdc2eadeb7039dd';
-        $config->terminalId = '7039dd';
+        $config->certificationStr = $this->getCertificationStr();
+        $config->terminalId = $this->getTerminalId();
         $config->environment = $this->getTestMode() ? Environment::TEST : Environment::PRODUCTION;
-        $config->selfSignedCertLocation = \app_path('../test-hertland.crt');
+        // $config->selfSignedCertLocation = \app_path('../test-hertland.crt');
 
         ServicesContainer::configureService($config);
     }
@@ -32,13 +30,11 @@ class SplitPayRequest extends AbstractHeartlandRequest
         $this->setGoodResponseCodes(array('00', '10'));
 
         $chargeMe = $this->gpCardObj;
-
-        $amount = $this->getFeeAmount();
-        
+dd("ASD",$this->getWithAccountNumber());
         return PayFacService::splitFunds()
         ->withAccountNumber($this->getWithAccountNumber())
         ->withReceivingAccountNumber($this->getWithReceivingAccountNumber())
-        ->withAmount($amount * 100)
+        ->withAmount($amount)
         ->withTransNum($this->getTransactionId())
         ->execute();
     }

@@ -15,8 +15,10 @@ class ProPayHppResponse extends CommonAbstractResponse
     {
         $this->request = $request;
 
-        $result = json_decode($data);
-        if(!($result && $result->Result)){
+        $result = json_decode($data); 
+
+
+        if(!$result && !$result->Result){
             throw new RuntimeException('Invalid Response From Gateway');
         }
 
@@ -38,15 +40,27 @@ class ProPayHppResponse extends CommonAbstractResponse
     }
 
     public function getHppId(){
-        return $this->response->HostedTransactionIdentifier;
+        return $this->response->HostedTransactionIdentifier ?? null;
     }
 
     public function getMessage()
     {
-        return $this->response->Result->ResultMessage;
+        return $this->response->Result->ResultMessage ?? null;
     }
 
     public function getCode(){
-        return $this->response->ResultCode;
+        return $this->response->Result->ResultCode ?? null;
+    }
+
+    public function getData(){
+
+        if($this->response == null){
+            return [];
+        }
+        $data = get_object_vars($this->response);
+        $data["HostedTransaction"] = isset($data["HostedTransaction"]) ? get_object_vars($data["HostedTransaction"]) : null;
+        $data["Result"] = isset($data["Result"]) ? get_object_vars($data["Result"]) : null;
+
+        return $data;
     }
 }
