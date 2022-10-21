@@ -6,6 +6,7 @@ use Omnipay\GlobalPayments\Message\AbstractProPayRequest;
 use Omnipay\GlobalPayments\Message\HeartlandMessage\AbstractHeartlandRequest;
 use Omnipay\GlobalPayments\Message\ProPayHppResponse;
 use Omnipay\GlobalPayments\Message\ProPayResponse;
+use Omnipay\GlobalPayments\Message\ProPayStoredResponse;
 
 class PurchaseStoredRequest extends AbstractProPayRequest
 {
@@ -15,8 +16,8 @@ class PurchaseStoredRequest extends AbstractProPayRequest
     // public const PROPAY_TEST = "https://xmltestapi.propay.com/";
     // public const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
 
-    public const PAYERS = "ProtectPay/Payers/";
-    public const HPP = "ProtectPay/HostedTransactions/";
+    // public const PAYERS = "ProtectPay/Payers/";
+    // public const HPP = "/protectpay/Payers/{PayerId}/PaymentMethods/ProcessedTransactions/";
 
     const MAX_COMMENT = 120 - 5;
 
@@ -27,7 +28,7 @@ class PurchaseStoredRequest extends AbstractProPayRequest
         $this->setupAuth();
         $this->setServicesConfig();
 
-        $response = new ProPayHppResponse($this, $this->runTrans());
+        $response = new ProPayStoredResponse($this, $this->runTrans());
         $response->setPayerId($this->payer_id);
         return $response;
     }
@@ -42,7 +43,6 @@ class PurchaseStoredRequest extends AbstractProPayRequest
 
     public function runTrans()
     {
-
 
         $data = [
             "PaymentMethodID" =>  $this->getPaymentReference(),
@@ -77,28 +77,9 @@ class PurchaseStoredRequest extends AbstractProPayRequest
 
         ];
 
+        $url = "/protectpay/Payers/" . $this->getPayerId() . "/PaymentMethods/ProcessedTransactions/";
 
-        // $data = [
-        //     "Amount" => (int) round($this->getAmount(),2),
-        //     "PayerId" => $this->payer_id,
-        //     "MerchantProfileId" => $this->getMerchantProfileId(),
-        //     "AcceptMasterPass" => $this->getAcceptMasterPass() ?? false,
-        //     "AvsRequirementType" => $this->getAvsRequirementType() ?? 3,
-        //     "CardHolderNameRequirementType" => $this->getCardHolderNameRequirementType() ?? 1,
-        //     "Comment1" => $this->trimComment($this->getComment1()),
-        //     "CssUrl" => $this->getCssUrl(),
-        //     "CurrencyCode" => $this->getCurrencyCode() ?? "USD",
-        //     "InvoiceNumber" => $this->getInvoiceNumber(),
-        //     "OnlyStoreCardOnSuccessfulProcess" => $this->getOnlyStoreCardOnSuccessfulProcess() ?? true,
-        //     "PaymentTypeId" => $this->getPaymentTypeId(),
-        //     "ProcessCard" => $this->getProcessCard(),
-        //     "Protected" => $this->getProtected(),
-        //     "ReturnURL" => $this->getReturnURL(),
-        //     "SecurityCodeRequirementType" => $this->getSecurityCodeRequirementType(),
-        //     "StoreCard" => $this->getStoreCard(),
-        // ];
-
-        return  dd($this->callEndpoint('PUT',self::HPP,$data));
+        return $this->callEndpoint('PUT',$url,$data);
     }
 
     public function trimComment($comment1){
