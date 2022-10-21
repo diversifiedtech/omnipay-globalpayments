@@ -1,16 +1,17 @@
 <?php
 
-namespace Omnipay\GlobalPayments\Message\HeartlandMessage;
+namespace Omnipay\GlobalPayments\Message\ProPayMessage;
 
 
-use GlobalPayments\Api\Services\PayFacService;
-use GlobalPayments\Api\ServicesContainer;
-use GlobalPayments\Api\ServiceConfigs\Gateways\PorticoConfig;
 use GlobalPayments\Api\Entities\Enums\Environment;
+use GlobalPayments\Api\ServiceConfigs\Gateways\PorticoConfig;
+use GlobalPayments\Api\ServicesContainer;
+use GlobalPayments\Api\Services\PayFacService;
+use Omnipay\GlobalPayments\Message\HeartlandMessage\AbstractHeartlandRequest;
 // use GlobalPayments\Api\Services\PayFacService;
 
 
-class SplitPayRequest extends AbstractHeartlandRequest
+class SplitPayRequest extends AbstractProPayRequest
 {
     protected function setServicesConfig()
     {
@@ -29,8 +30,10 @@ class SplitPayRequest extends AbstractHeartlandRequest
 
         $this->setGoodResponseCodes(array('00', '10'));
 
-        $chargeMe = $this->gpCardObj;
 dd("ASD",$this->getWithAccountNumber());
+
+
+        $chargeMe = $this->gpCardObj;
         return PayFacService::splitFunds()
         ->withAccountNumber($this->getWithAccountNumber())
         ->withReceivingAccountNumber($this->getWithReceivingAccountNumber())

@@ -12,11 +12,13 @@ class GetUrlRequest extends AbstractProPayRequest
     protected $endpoint;
 
 
-    public const PROPAY_TEST = "https://xmltestapi.propay.com/";
-    public const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
+    // public const PROPAY_TEST = "https://xmltestapi.propay.com/";
+    // public const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
 
     public const PAYERS = "ProtectPay/Payers/";
     public const HPP = "ProtectPay/HostedTransactions/";
+
+    const MAX_COMMENT = 120 - 5;
 
     protected $payer_id;
 
@@ -38,7 +40,6 @@ class GetUrlRequest extends AbstractProPayRequest
 
 
 
-
     public function runTrans()
     {
 
@@ -52,16 +53,14 @@ class GetUrlRequest extends AbstractProPayRequest
         }
 
         $this->payer_id = $result->ExternalAccountID;
-
-
         $data = [
-            "Amount" => $this->getAmount(),
+            "Amount" => (int) round($this->getAmount(),2),
             "PayerId" => $this->payer_id,
             "MerchantProfileId" => $this->getMerchantProfileId(),
             "AcceptMasterPass" => $this->getAcceptMasterPass() ?? false,
             "AvsRequirementType" => $this->getAvsRequirementType() ?? 3,
             "CardHolderNameRequirementType" => $this->getCardHolderNameRequirementType() ?? 1,
-            "Comment1" => $this->getComment1(),
+            "Comment1" => $this->trimComment($this->getComment1()),
             "CssUrl" => $this->getCssUrl(),
             "CurrencyCode" => $this->getCurrencyCode() ?? "USD",
             "InvoiceNumber" => $this->getInvoiceNumber(),
@@ -75,6 +74,10 @@ class GetUrlRequest extends AbstractProPayRequest
         ];
 
         return  $this->callEndpoint('PUT',self::HPP,$data);
+    }
+
+    public function trimComment($comment1){
+        return (strlen($comment1) >= static::MAX_COMMENT) ? substr($comment1,0,static::MAX_COMMENT) . '...' : $comment1;
     }
 
 

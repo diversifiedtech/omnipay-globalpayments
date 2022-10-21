@@ -17,8 +17,7 @@ class ProPayHppResponse extends CommonAbstractResponse
 
         $result = json_decode($data); 
 
-
-        if(!$result && !$result->Result){
+        if(!$result || !$result->Result){
             throw new RuntimeException('Invalid Response From Gateway');
         }
 
@@ -57,10 +56,24 @@ class ProPayHppResponse extends CommonAbstractResponse
         if($this->response == null){
             return [];
         }
-        $data = get_object_vars($this->response);
-        $data["HostedTransaction"] = isset($data["HostedTransaction"]) ? get_object_vars($data["HostedTransaction"]) : null;
-        $data["Result"] = isset($data["Result"]) ? get_object_vars($data["Result"]) : null;
+        $data = $this->object_to_array($this->response);
 
         return $data;
+    }
+
+    protected function object_to_array($obj) {
+        //only process if it's an object or array being passed to the function
+        if(is_object($obj) || is_array($obj)) {
+            $ret = (array) $obj;
+            foreach($ret as &$item) {
+            //recursively process EACH element regardless of type
+                $item = $this->object_to_array($item);
+            }
+            return $ret;
+        }
+        //otherwise (i.e. for scalar values) return without modification
+        else {
+            return $obj;
+        }
     }
 }

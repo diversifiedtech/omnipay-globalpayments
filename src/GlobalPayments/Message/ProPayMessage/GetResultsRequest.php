@@ -13,8 +13,8 @@ class GetResultsRequest extends AbstractProPayRequest
     protected $endpoint;
 
 
-    public const PROPAY_TEST = "https://xmltestapi.propay.com/";
-    public const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
+    // public const PROPAY_TEST = "https://xmltestapi.propay.com/";
+    // public const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
 
     public const PAYERS = "ProtectPay/Payers/";
     public const HPP = "ProtectPay/HostedTransactions/";
@@ -44,10 +44,8 @@ class GetResultsRequest extends AbstractProPayRequest
 
     public function runTrans()
     {
-
         $path = self::RESULTS . $this->getHostedTransactionId();
 
-dump($path);
         return $this->callEndpoint('GET',$path,[]);
         
     }

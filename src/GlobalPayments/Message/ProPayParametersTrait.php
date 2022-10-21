@@ -176,4 +176,17 @@ trait ProPayParametersTrait
     public function setHostedTransactionId($value){
         return $this->setParameter("HostedTransactionId",$value);
     }
+
+    /**
+     * Split Pay Parameters
+     */
+
+    public function getPaymentReference(){
+        return $this->getParameter("PaymentReference");
+    }
+
+    public function setPaymentReference($value){
+        return $this->setParameter("PaymentReference",$value);
+    }
+    
 }

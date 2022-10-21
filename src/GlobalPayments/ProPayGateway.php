@@ -162,6 +162,17 @@ class ProPayGateway extends AbstractGateway
         return $this->getParameter('HostedTransactionIdentifier');
     }
 
+    
+    public function getMerchantProfileId()
+    {
+        return $this->getParameter('MerchantProfileId');
+    }
+
+    public function setMerchantProfileId($value)
+    {
+        return $this->setParameter("MerchantProfileId", $value);
+    }
+
     // Transactions
 
     public function getUrl($options = array())
@@ -180,8 +191,16 @@ class ProPayGateway extends AbstractGateway
         );
     }
 
+    public function seperateSplitPay($options = array()){
+        return $this->splitPay($options);
+    }
+
     public function splitPay($options = array()){
-        return $this->createRequest($this->heartlandMessagePath . '\SplitPayRequest', $options);
+        return $this->createRequest($this->propayMessagePath . '\SeperateSplitPayRequest', $options);
+    }
+
+    public function purchaseStored($options = array()){
+        return $this->createRequest($this->propayMessagePath . '\PurchaseStoredRequest', $options);
     }
 
 
