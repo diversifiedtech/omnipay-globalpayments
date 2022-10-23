@@ -5,7 +5,7 @@ namespace Omnipay\GlobalPayments\Message;
 use Omnipay\Common\Message\AbstractResponse as CommonAbstractResponse;
 use Omnipay\Common\Exception\RuntimeException;
 
-class ProPayHppResponse extends CommonAbstractResponse
+class ProPaySplitResponse extends CommonAbstractResponse
 {
     protected $payer_id;
 
@@ -14,9 +14,13 @@ class ProPayHppResponse extends CommonAbstractResponse
     public function __construct($request, $data)
     {
         $this->request = $request;
+
         $result = json_decode($data); 
 
-        if(!$result || !$result->Result){
+        // TODO REMOVE
+        dump($result);
+
+        if(!$result || !$result->Status){
             throw new RuntimeException('Invalid Response From Gateway');
         }
 
@@ -25,7 +29,9 @@ class ProPayHppResponse extends CommonAbstractResponse
 
     public function isSuccessful()
     {
-        return $this->response->Result->ResultValue == static::SUCCESS;
+        return in_array(
+            $this->response->Status, $this->request->getGoodReponseCodes()
+        );
     }
 
     public function setPayerId($value){
@@ -37,17 +43,21 @@ class ProPayHppResponse extends CommonAbstractResponse
         return $this->payer_id;
     }
 
-    public function getHppId(){
-        return $this->response->HostedTransactionIdentifier ?? null;
+    public function getAccountNumber(){
+        return $this->response->AccountNumber ?? null;
+    }
+
+    public function getTransactionNumber(){
+        return $this->response->TransactionNumber ?? null;
     }
 
     public function getMessage()
     {
-        return $this->response->Result->ResultMessage ?? null;
+        return $this->response->Status ?? null;
     }
 
     public function getCode(){
-        return $this->response->Result->ResultCode ?? null;
+        return $this->response->Status ?? null;
     }
 
     public function getData(){

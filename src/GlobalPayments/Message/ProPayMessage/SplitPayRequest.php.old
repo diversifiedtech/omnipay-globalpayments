@@ -30,9 +30,6 @@ class SplitPayRequest extends AbstractProPayRequest
 
         $this->setGoodResponseCodes(array('00', '10'));
 
-dd("ASD",$this->getWithAccountNumber());
-
-
         $chargeMe = $this->gpCardObj;
         return PayFacService::splitFunds()
         ->withAccountNumber($this->getWithAccountNumber())

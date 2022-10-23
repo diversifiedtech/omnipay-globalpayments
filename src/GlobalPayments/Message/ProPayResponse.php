@@ -5,7 +5,7 @@ namespace Omnipay\GlobalPayments\Message;
 use Omnipay\Common\Message\AbstractResponse as CommonAbstractResponse;
 use Omnipay\Common\Exception\RuntimeException;
 
-class zProPayResponse extends CommonAbstractResponse
+class ProPayResponse extends CommonAbstractResponse
 {
     public function __construct($request, $data)
     {

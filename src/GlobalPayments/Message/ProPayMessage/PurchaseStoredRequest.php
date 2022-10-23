@@ -70,7 +70,6 @@ class PurchaseStoredRequest extends AbstractProPayRequest
             // },
             "PayerAccountId" => $this->getPayerId(),
             "MerchantProfileId" => $this->getMerchantProfileId(),
-            // "PayerId" => $this->payer_id,
             "Amount" => (int) round($this->getAmount(),2),
             "CurrencyCode" => $this->getCurrencyCode() ?? "USD",
             "Comment1" => $this->trimComment($this->getComment1()),
