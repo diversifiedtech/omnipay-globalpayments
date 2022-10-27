@@ -5,7 +5,7 @@ namespace Omnipay\GlobalPayments\Message;
 use Omnipay\Common\Message\AbstractResponse as CommonAbstractResponse;
 use Omnipay\Common\Exception\RuntimeException;
 
-class ProPaySplitResponse extends CommonAbstractResponse
+class ProPayMerchantResponse extends CommonAbstractResponse
 {
     protected $payer_id;
 
@@ -17,44 +17,28 @@ class ProPaySplitResponse extends CommonAbstractResponse
 
         $result = json_decode($data); 
 
-        if(!$result || !$result->Status){
+        if(!$result || !$result->RequestResult){
             throw new RuntimeException('Invalid Response From Gateway');
         }
 
         $this->response = $result;
     }
 
+    public function getMerchantProfileId(){
+        return $this->response->ProfileId;
+    }
+
     public function isSuccessful()
     {
-        return in_array(
-            $this->response->Status, $this->request->getGoodReponseCodes()
-        );
+        return $this->response->RequestResult->ResultValue == static::SUCCESS;
     }
-
-    public function setPayerId($value){
-        $this->payer_id = $value;
-        return $this;
-    }
-
-    public function getPayerId(){
-        return $this->payer_id;
-    }
-
-    public function getAccountNumber(){
-        return $this->response->AccountNumber ?? null;
-    }
-
-    public function getTransactionNumber(){
-        return $this->response->TransactionNumber ?? null;
-    }
-
     public function getMessage()
     {
-        return $this->response->Status ?? null;
+        return $this->response->RequestResult->ResultMessage ?? null;
     }
 
     public function getCode(){
-        return $this->response->Status ?? null;
+        return $this->response->RequestResult->ResultCode ?? null;
     }
 
     public function getData(){

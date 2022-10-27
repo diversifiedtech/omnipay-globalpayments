@@ -188,5 +188,17 @@ trait ProPayParametersTrait
     public function setPaymentReference($value){
         return $this->setParameter("PaymentReference",$value);
     }
-    
+
+    /**
+     * Create Merchant Profile Id
+     */
+    public function getProfileName()
+    {
+        return $this->getParameter('ProfileName');
+    }
+
+    public function setProfileName($value)
+    {
+        return $this->setParameter('ProfileName', $value);
+    }
 }

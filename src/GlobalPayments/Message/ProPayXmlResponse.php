@@ -5,7 +5,7 @@ namespace Omnipay\GlobalPayments\Message;
 use Omnipay\Common\Message\AbstractResponse as CommonAbstractResponse;
 use Omnipay\Common\Exception\RuntimeException;
 
-class ProPaySplitResponse extends CommonAbstractResponse
+class ProPayXmlResponse extends CommonAbstractResponse
 {
     protected $payer_id;
 
@@ -13,21 +13,22 @@ class ProPaySplitResponse extends CommonAbstractResponse
 
     public function __construct($request, $data)
     {
+
         $this->request = $request;
 
-        $result = json_decode($data); 
+        $xml = simplexml_load_string($data);
 
-        if(!$result || !$result->Status){
+        if(!$xml || !$xml->XMLTrans){
             throw new RuntimeException('Invalid Response From Gateway');
         }
 
-        $this->response = $result;
+        $this->response = $xml;
     }
 
     public function isSuccessful()
     {
         return in_array(
-            $this->response->Status, $this->request->getGoodReponseCodes()
+            $this->response->XMLTrans->status, $this->request->getGoodReponseCodes()
         );
     }
 

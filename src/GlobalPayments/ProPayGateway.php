@@ -203,6 +203,17 @@ class ProPayGateway extends AbstractGateway
         return $this->createRequest($this->propayMessagePath . '\PurchaseStoredRequest', $options);
     }
 
+    public function splitPayReverse($options = array()){
+        return $this->createRequest($this->propayMessagePath . '\SeperateReverseSplitPayRequest', $options);
+    }
+
+    public function createMerchantProfileId($options = array()){
+        return $this->createRequest($this->propayMessagePath . '\CreateMerchantProfileRequest', $options);
+    }
+
+    public function createMerchant($options = array()){
+        return $this->createRequest($this->propayMessagePath . '\CreateMerchantRequest', $options);
+    }
 
     public function purchase($options = array())
     {

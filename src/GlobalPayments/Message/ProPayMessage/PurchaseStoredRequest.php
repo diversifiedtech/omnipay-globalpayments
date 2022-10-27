@@ -68,6 +68,9 @@ class PurchaseStoredRequest extends AbstractProPayRequest
             // "PayerOverrides" =>  {
             //     "IpAddress" =>  "127.0.0.1"
             // },
+            "AchOverrides" => [
+                "SecCode" => "WEB",
+            ],
             "PayerAccountId" => $this->getPayerId(),
             "MerchantProfileId" => $this->getMerchantProfileId(),
             "Amount" => (int) round($this->getAmount(),2),

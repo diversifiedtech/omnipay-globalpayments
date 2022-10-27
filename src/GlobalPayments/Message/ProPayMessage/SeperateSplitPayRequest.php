@@ -12,6 +12,7 @@ class SeperateSplitPayRequest extends AbstractProPayRequest
 {
     protected $endpoint;
 
+    protected $certAuth = true;
 
     // public const PROPAY_TEST = "https://xmltestapi.propay.com/";
     // public const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
@@ -44,18 +45,15 @@ class SeperateSplitPayRequest extends AbstractProPayRequest
     public function runTrans()
     {
         $data = [
-
             "accountNum" => $this->getWithAccountNumber(),
             "recAccntNum" => $this->getWithReceivingAccountNumber(),
             "amount" => (int) round($this->getAmount(), 2),
             "transNum" => $this->getTransactionId(),
         ];
 
-        dump($data); //delete
-
-        // $data = '{"accountNum":718553325,"recAccntNum":718554415,"amount":100,"transNum":13,"InvoiceNumber":"invoice number","comment1":"comment 1","comment2":"comment 2"}';
 
 
         return $this->callEndpoint('PUT', self::SPLIT_PAY, $data);
+
     }
 }

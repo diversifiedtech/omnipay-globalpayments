@@ -15,6 +15,8 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
 
     use ProPayParametersTrait;
 
+    protected $certAuth = false;
+
 
     const PROPAY_TEST = "https://xmltestapi.propay.com/";
     const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
@@ -34,12 +36,27 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
 
 
     protected function setupAuth(){
-        $this->authHeader = $this->getAuthHeader();
+        $this->authHeader = $this->certAuth ? $this->getCertAuthHeader() : $this->getAuthHeader();
         $this->endpoint = $this->getTestMode() ? static::PROPAY_TEST : static::PROPAY_PRODUCTION;
     }
 
 
     protected abstract function setServicesConfig();
+
+    public function callXmlEndpoint($method = "POST", $path, $data){
+
+        $endpoint = $this->endpoint . ltrim($path,"/");
+
+        $httpResponse = $this->httpClient->request(
+            $method,
+            $endpoint,
+            ['Content-Type' =>  'text/xml'],
+            $data
+        );        
+
+        return $httpResponse->getBody()->getContents();
+
+    }
 
 
     public function callEndpoint($method = "POST", $path, $data){
@@ -301,4 +318,25 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
     {
         return $this->getParameter('BillerAccountId') . ":" . $this->getParameter('AuthToken');
     }
+
+    public function getCertAuthHeader(){
+        return $this->getParameter('certStr') . ":" . $this->getParameter('termid');
+    }
+
+    /**
+     * Additional 
+     */
+
+
+    public function getProfileName()
+    {
+        return $this->getParameter('ProfileName');
+    }
+
+    public function setProfileName($value)
+    {
+        return $this->setParameter('ProfileName', $value);
+    }
+
+
 }
