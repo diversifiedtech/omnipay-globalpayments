@@ -2,7 +2,7 @@
 
 namespace Omnipay\GlobalPayments\Message\HeartlandMessage;
 
-class ACHPurchaseRequest extends AbstractHeartlandRequest
+class AchPurchaseRequest extends AbstractHeartlandRequest
 {
     public function runTrans()
     {
