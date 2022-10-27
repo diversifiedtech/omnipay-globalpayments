@@ -1,5 +1,5 @@
 {
-    "name": "globalpayments/omnipay-globalpayments",
+    "name": "diversifiedtech/omnipay-globalpayments",
     "type": "library",
     "description": "Omnipay Driver for GlobalPayments and Heartland / Portico",
     "keywords": [
