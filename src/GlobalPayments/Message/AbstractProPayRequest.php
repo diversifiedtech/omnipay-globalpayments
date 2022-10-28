@@ -338,5 +338,14 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
         return $this->setParameter('ProfileName', $value);
     }
 
+    public function getMerchantOnboarding(){
+        return $this->getParameter('MerchantOnboarding');
+    }
+
+    public function setMerchantOnboarding($value)
+    {
+        return $this->setParameter('MerchantOnboarding', $value);
+    }
+
 
 }

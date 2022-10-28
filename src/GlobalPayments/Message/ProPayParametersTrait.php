@@ -190,8 +190,19 @@ trait ProPayParametersTrait
     }
 
     /**
-     * Create Merchant Profile Id
+     * Create Merchant Profile & Profile Id
      */
+    
+    public function getMerchantOnboarding()
+    {
+        return $this->getParameter('MerchantOnboarding');
+    }
+
+    public function setMerchantOnboarding($value)
+    {
+        return $this->setParameter('MerchantOnboarding', $value);
+    }
+
     public function getProfileName()
     {
         return $this->getParameter('ProfileName');

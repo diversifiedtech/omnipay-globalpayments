@@ -1,24 +1,5 @@
 {
-    "PersonalData":
-    {
-        "FirstName": "Customer",
-        "MiddleInitial": "X",
-        "LastName": "Doe",
-        "DateOfBirth": "01-01-1992",
-        "SocialSecurityNumber": "123456789",
-        "SourceEmail": "test663signup@propay.com",
-        "PhoneInformation":
-        {
-            "DayPhone": "8888888888",
-            "EveningPhone": "8888888888"
-        },
-        "NotificationEmail": "Partner@Partner.com"
-    },
-    "SignupAccountData":
-    {
-        "CurrencyCode": "USD",
-        "Tier": "Test"
-    },
+
     "BusinessData":
     {
         "BusinessLegalName": "Merchantile Parent, Inc.",
@@ -31,56 +12,9 @@
         "AverageTicket": 100,
         "HighestTicket": 250
     },
-    "Address":
-    {
-        "ApartmentNumber": "1",
-        "Address1": "3400 N Ashton Blvd",
-        "Address2": "Suite 200",
-        "City": "Lehi",
-        "State": "UT",
-        "Country": "USA",
-        "Zip": "84043"
-    },
-    "BusinessAddress":
-    {
-        "ApartmentNumber": "200",
-        "Address1": "RR 123445",
-        "Address2": "SW",
-        "City": "Tooele",
-        "State": "UT",
-        "Country": "USA",
-        "Zip": "84074"
-    },
-    "BankAccount":
-    {
-        "AccountCountryCode": "USA",
-        "BankAccountNumber": "123456789",
-        "RoutingNumber": "011306829",
-        "AccountOwnershipType": "Business",
-        "BankName": "MERCHANTILE BANK UT",
-        "AccountType": "Checking",
-        "AccountName": null,
-        "Description": null
-    },
-    "BeneficialOwnerData":
-    {
-        "OwnerCount": "1",
-        "Owners":
-        [
-            {
-                "FirstName": "First1",
-                "LastName": "Last1",
-                "SSN": "123456789",
-                "DateOfBirth": "01-01-1981",
-                "Email": "test1@qamail.com",
-                "Address": "Address",
-                "City": "Lehi",
-                "State": "UT",
-                "Zip": "84010",
-                "Country": "USA",
-                "Title": "CEO",
-                "Percentage": "100"
-            }
-        ]
+    "AuthorizedSigner":{
+        "FirstName" :"Name",
+        "LastName" :"lasntame",
+        "Title" : "title",
     }
 }
