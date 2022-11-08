@@ -12,16 +12,18 @@ class PurchaseRequest extends AbstractHeartlandRequest
 
         $chargeMe = $this->gpCardObj;
 
+        $amount = round(((int) $this->getAmount() / 100),2,2);
 
         $card_data = $this->getCard();
         if($card_data){
+
             $card = new CreditCardData();
             $card->number = $card_data->getNumber();
             $card->expMonth = $card_data->getExpiryMonth();
             $card->expYear = $card_data->getExpiryYear();
             $card->cvn = $card_data->getCvv();
 
-            return $card->charge($this->getAmount())
+            return $card->charge($amount)
             ->withAddress($this->gpBillingAddyObj)
             ->withCurrency($this->getCurrency())
             ->withDescription($this->getDescription())
@@ -30,7 +32,7 @@ class PurchaseRequest extends AbstractHeartlandRequest
         }
 
 
-        return $chargeMe->charge($this->getAmount())
+        return $chargeMe->charge($amount)
         ->withAddress($this->gpBillingAddyObj)
         ->withCurrency($this->getCurrency())
         ->withDescription($this->getDescription())
