@@ -19,7 +19,7 @@ abstract class AbstractProPayRequest extends \Omnipay\Common\Message\AbstractReq
 
 
     const PROPAY_TEST = "https://xmltestapi.propay.com/";
-    const PROPAY_PRODUCTION = "https://xmlapi.propay.com/";
+    const PROPAY_PRODUCTION = "https://api.propay.com/";
 
     protected $gpBillingAddyObj;
     protected $gpCardObj;
