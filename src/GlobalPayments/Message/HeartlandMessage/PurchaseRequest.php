@@ -14,7 +14,23 @@ class PurchaseRequest extends AbstractHeartlandRequest
 
         $amount = round(((int) $this->getAmount() / 100),2,2);
 
+
+        $token = $this->getToken();
+
+        // Stored Card Request
+        if($token){
+            return $chargeMe->charge($amount)
+            ->withAddress($this->gpBillingAddyObj)
+            ->withCurrency($this->getCurrency())
+            ->withDescription($this->getDescription())
+            ->withClientTransactionId($this->getTransactionId())
+            ->withStoredCredential($token)
+            ->execute();
+        }
+
         $card_data = $this->getCard();
+
+        // Raw Card Request
         if($card_data){
 
             $card = new CreditCardData();
@@ -31,6 +47,7 @@ class PurchaseRequest extends AbstractHeartlandRequest
             ->execute();
         }
 
+        // Fallback
 
         return $chargeMe->charge($amount)
         ->withAddress($this->gpBillingAddyObj)

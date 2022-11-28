@@ -220,6 +220,10 @@ class ProPayGateway extends AbstractGateway
         return $this->createRequest($this->heartlandMessagePath . '\PurchaseRequest', $options);
     }
 
+    public function porticoStored($options = array()){
+        return $this->createRequest($this->heartlandMessagePath . '\CreateCardRequest', $options);
+    }
+
     public function purchase($options = array())
     {
         if (isset($options['check'])) {
